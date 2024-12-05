@@ -1,5 +1,5 @@
 import {useState} from 'react';
-const baseUrl = 'http://localhost:4000'
+const baseUrl = ''
 interface mishnaProps {
     masechet: string,
     startperek: string,

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Mishnas from "../Mishnas/Mishnas";
 import {ProgressBar, Row, Col} from 'react-bootstrap';
-const baseUrl = 'http://localhost:4000'
+const baseUrl = ''
 
 interface IMapData {
     id: number, 

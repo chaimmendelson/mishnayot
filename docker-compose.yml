@@ -17,7 +17,7 @@ services:
 
   server:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     container_name: mishna_server
     environment:
