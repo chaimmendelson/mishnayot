@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",                       // Specifies the ECMAScript target version.
+    "module": "CommonJS",                    // Use CommonJS for module compatibility with Node.js.
+    "rootDir": "./src",                      // The root directory of your TypeScript files.
+    "outDir": "./dist",                      // The output directory for compiled JavaScript files.
+    "strict": true,                          // Enable strict type checking.
+    "esModuleInterop": true,                 // Allow default imports from modules with no default export.
+    "skipLibCheck": true,                    // Skip checking library files for type errors.
+    "forceConsistentCasingInFileNames": true,// Ensure file imports are case-sensitive.
+    "moduleResolution": "node",             // Resolve modules in Node.js style.
+    "resolveJsonModule": true,               // Allow importing JSON files.
+    "typeRoots": ["./node_modules/@types"],  // Specify type definitions locations.
+    "experimentalDecorators": true,          // Enable experimental support for decorators.
+    "emitDecoratorMetadata": true,           // Emit metadata for decorators (required by TypeORM).
+    "strictPropertyInitialization": false,   // Disable strict checks for property initialization.
+    "noImplicitAny": false,                  // Allows variables to have `any` type without explicit definition.
+    "noUnusedLocals": true,                  // Warn on unused local variables.
+    "noUnusedParameters": false,              // Warn on unused function parameters.
+    "allowSyntheticDefaultImports": true,    // Allow synthetic default imports.
+    "incremental": true                      // Enable incremental compilation for faster builds.
+  },
+  "include": ["src/**/*.ts"],                // Include all TypeScript files in the `src` directory.
+  "exclude": ["node_modules", "dist", "**/*.test.ts"] // Exclude test files and output directories.
+}

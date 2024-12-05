@@ -1,0 +1,25 @@
+# Step 1: Use an official Node.js image as a base
+FROM node:18-alpine
+
+# Step 2: Set working directory inside the container
+WORKDIR /app
+
+# Step 3: Install dependencies
+COPY package*.json ./
+
+RUN npm install
+
+# Step 4: Install TypeScript globally
+RUN npm install -g typescript
+
+# Step 5: Copy the application source code into the container
+COPY . .
+
+# Step 6: Build the TypeScript code
+RUN tsc
+
+# Step 7: Expose the port that the server will run on
+EXPOSE 3000
+
+# Step 8: Start the application using ts-node or compiled JavaScript
+CMD ["npm", "run", "start"]

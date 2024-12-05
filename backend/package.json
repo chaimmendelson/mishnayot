@@ -1,0 +1,23 @@
+{
+  "name": "mishnabackend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "/src/server.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "pg": "^8.13.1",
+    "ts-node": "^10.9.2",
+    "typeorm": "^0.3.20"
+  }
+}
