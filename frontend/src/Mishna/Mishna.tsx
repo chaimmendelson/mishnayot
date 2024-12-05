@@ -14,7 +14,7 @@ function Mishna(props: any) {
             masechet: props.masechet,
             startperek: props.startperek
         };
-        const url = `${baseUrl}/api/goBack`;
+        const url = `${baseUrl}/api/mishnas/go-back`;
         const response = await fetch(url, {
             method: 'POST',
             mode: 'cors',
@@ -39,7 +39,7 @@ function Mishna(props: any) {
             masechet: props.masechet,
             startperek: props.startperek
         };
-        const url = `${baseUrl}/api/done`;
+        const url = `${baseUrl}/api/mishnas/done`;
         const response = await fetch(url, {
             method: 'POST',
             mode: 'cors',

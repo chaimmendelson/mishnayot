@@ -4,6 +4,8 @@ import cors from "cors";
 import mishnaRoutes from "./routes/mishnaRoutes"; // Import routes
 import AppDataSource from "./data-source"; // DataSource configuration
 import { Request, Response } from "express";
+import logger from "./utils/logger"; // Importing logger
+import reset from "./db/reset";
 
 // Create Express application
 const app = express();
@@ -27,17 +29,18 @@ const startServer = async () => {
   try {
     // Connect to the database
     await AppDataSource.initialize();
-    console.log("Data Source has been initialized!");
+    logger.info("Data Source has been initialized!");
+    await reset();
 
     // Set the port for the server
-    const port = process.env.PORT || 3000;
+    const port = process.env.PORT || 4000;
 
     // Start the server
     app.listen(port, () => {
-      console.log(`Server is running on http://localhost:${port}`);
+      logger.info(`Server is running on http://localhost:${port}`);
     });
   } catch (error) {
-    console.error("Error during Data Source initialization:", error);
+    logger.error("Error during Data Source initialization:", error);
   }
 };
 

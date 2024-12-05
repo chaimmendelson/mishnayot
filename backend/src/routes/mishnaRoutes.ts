@@ -22,6 +22,6 @@ apiRouter.get("/done", MishnaController.getFinishedMishnas);
 apiRouter.post("/done", MishnaController.markMishnaAsDone);
 
 // Route for marking a mishna as undone (go back)
-apiRouter.post("/goBack", MishnaController.markMishnaAsUndone);
+apiRouter.post("/go-back", MishnaController.markMishnaAsUndone);
 
 export default apiRouter;

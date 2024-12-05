@@ -2,17 +2,24 @@ import AppDataSource from "../data-source";
 import { Mishna } from "../models/Mishna";
 import fs from "fs/promises"; // Use promises for better async handling
 import path from "path";
+import logger from "../utils/logger"; // Importing the logger
 
 const reset = async () => {
   try {
-    // Initialize the data source
-    const dataSource = await AppDataSource.initialize();
+    // Ensure that the data source is initialized (only once during app startup)
+    if (!AppDataSource.isInitialized) {
+      await AppDataSource.initialize();
+    }
 
-    const mishnaRepository = dataSource.getRepository(Mishna);
+    const mishnaRepository = AppDataSource.getRepository(Mishna);
 
     // Clear existing data from the table
     await mishnaRepository.clear();
-    console.log("All existing mishnayot removed.");
+    logger.info("All existing mishnayot removed.");
+
+    // Reset the serial counter for the id column
+    await AppDataSource.query('SELECT setval(\'mishna_id_seq\', 1, false)');
+    logger.info("Serial counter for 'id' has been reset.");
 
     // Read the text file
     const filePath = path.resolve(__dirname, "mishnayot.txt");
@@ -25,7 +32,7 @@ const reset = async () => {
       const [masechet, startperek] = line.split("/");
 
       if (!masechet || !startperek) {
-        console.warn(`Skipping invalid line: ${line}`);
+        logger.warn(`Skipping invalid line: ${line}`);
         continue;
       }
 
@@ -38,15 +45,11 @@ const reset = async () => {
 
       // Save the instance
       await mishnaRepository.save(newMishna);
-      console.log(`Saved: ${JSON.stringify(newMishna)}`);
     }
 
-    console.log("Reset completed successfully.");
+    logger.info("Reset completed successfully.");
   } catch (error) {
-    console.error("Error during reset:", error);
-  } finally {
-    // Close the connection
-    await AppDataSource.destroy();
+    logger.error("Error during reset:", error);
   }
 };
 

@@ -28,7 +28,7 @@ function Stats() {
 
     useEffect(() => {
         async function fetchData(){
-            const resultAll = await fetch(`${baseUrl}/api/all/all`);
+            const resultAll = await fetch(`${baseUrl}/api/mishnas/all`);
             const resultAllJson: IObjectReturn = await resultAll.json();
             await setAll(resultAllJson.results);
         }
@@ -38,7 +38,7 @@ function Stats() {
 
     useEffect(() => {
         async function fetchData(){
-            const resultDone = await fetch(`${baseUrl}/api/done/done`);
+            const resultDone = await fetch(`${baseUrl}/api/mishnas/done`);
             const resultDoneJson: IObjectReturn = await resultDone.json();
             await setDone(resultDoneJson.results)
         }

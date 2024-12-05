@@ -16,7 +16,7 @@ RUN npm install -g typescript
 COPY . .
 
 # Step 6: Build the TypeScript code
-RUN tsc
+RUN ["npm", "run", "build"]
 
 # Step 7: Expose the port that the server will run on
 EXPOSE 3000

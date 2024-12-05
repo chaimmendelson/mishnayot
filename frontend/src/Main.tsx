@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Mishnas from "./Mishnas/Mishnas";
 import Search from './Search/Search';
@@ -22,7 +21,7 @@ function Main() {
 
   useEffect(() => {
     async function fetchDefaultData() {
-      const url = `${baseUrl}/api`;
+      const url = `${baseUrl}/api/mishnas`;
       const response = await fetch(url);
       const responseJson: IObjectReturn = await response.json()
       console.log(responseJson.results);
@@ -33,7 +32,7 @@ function Main() {
   }, [])
 
   const search = async (searchTerm: string) => {
-    const url = `${baseUrl}/api/${searchTerm}`;
+    const url = `${baseUrl}/api/mishnas/${searchTerm}`;
     const response = await fetch(url);
     const responseJson: IObjectReturn = await response.json()
     console.log(responseJson.results);
