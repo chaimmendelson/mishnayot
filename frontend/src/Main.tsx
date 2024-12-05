@@ -1,50 +1,80 @@
-import React, {useState, useEffect} from 'react';
-import './App.css';
-import Mishnas from "./Mishnas/Mishnas";
-import Search from './Search/Search';
-const baseUrl = 'http://localhost:4000'
+import React, { useState, useEffect } from "react";
+import Mishnas from "./components/Mishnas";
+import Search from "./components/Search";
+import { Api } from "./utils/api";
+import { Container } from "react-bootstrap";
 
 interface IMapData {
-  id: number, 
-  masechet: string, 
-  startperek: string,
-  done: string
+  id: number;
+  masechet: string;
+  startperek: string;
+  done: boolean;
 }
 
 interface IObjectReturn {
-  results: [IMapData]
+  results: IMapData[];
 }
 
-
 function Main() {
-  const [mapData, setMapData] = useState<[IMapData] | undefined>(undefined);
+  const [mapData, setMapData] = useState<IMapData[]>([]);
+  const [filter, setFilter] = useState<string>("");
+  const [filteredData, setFilteredData] = useState<IMapData[]>([]);
+
+  const refreshData = async () => {
+    const response = await Api.fetchAllMishnas();
+    const responseJson: IObjectReturn = response;
+    console.log(responseJson);
+    const res: IMapData[] = responseJson.results;
+    console.log(res); //array full
+    setMapData(res);
+  };
 
   useEffect(() => {
-    async function fetchDefaultData() {
-      const url = `${baseUrl}/api/mishnas`;
-      const response = await fetch(url);
-      const responseJson: IObjectReturn = await response.json()
-      console.log(responseJson.results);
-      setMapData(responseJson.results);
+    refreshData();
+  }, []);
+
+  useEffect(() => {
+    filterData();
+  }, [mapData]);
+
+  useEffect(() => {
+    filterData();
+  }, [filter]);
+
+  const toggleDone = async (mishnaId: number) => {
+    const mishna = mapData.find((mishna) => mishna.id === mishnaId);
+    if (mishna?.done === true) {
+      await Api.markMishnaAsUndone(mishnaId);
+    } else {
+      await Api.markMishnaAsDone(mishnaId);
     }
+    const updatedData = mapData.map((mishna) => {
+      if (mishna.id === mishnaId) {
+        mishna.done = !mishna.done;
+      }
+      return mishna;
+    });
+    setMapData(updatedData);
+  };
 
-    fetchDefaultData();
-  }, [])
+  const filterData = () => {
+    // filter the the mapData by the term no request to the server
+    const filtered = mapData.filter((mishna) => {
+      return mishna.masechet.toLowerCase().includes(filter.toLowerCase());
+    });
+    setFilteredData(filtered);
+  };
 
-  const search = async (searchTerm: string) => {
-    const url = `${baseUrl}/api/mishnas/${searchTerm}`;
-    const response = await fetch(url);
-    const responseJson: IObjectReturn = await response.json()
-    console.log(responseJson.results);
-    setMapData(responseJson.results);
-  }
+  const updateFilter = (term: string) => {
+    setFilter(term);
+  };
 
   return (
-    <div className="App">
-      <Search searchFunc={search}/>
-      <Mishnas results={mapData} message={undefined}/>
+    <Container className="App">
+      <Search onValueChange={updateFilter} />
+      <Mishnas results={filteredData} toggleDone={toggleDone} />
       <p></p>
-    </div>
+    </Container>
   );
 }
 

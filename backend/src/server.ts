@@ -29,7 +29,7 @@ app.get("/health", (req: Request, res: Response) => {
 });
 
 // Root route that serves the front-end
-app.get("/", (req: Request, res: Response) => {
+app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../", "public", "index.html")); // Ensure index.html exists in your build directory
 });
 

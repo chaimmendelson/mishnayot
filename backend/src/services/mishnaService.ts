@@ -4,26 +4,17 @@ import reset from "../db/reset";
 
 export class MishnaService {
 
-  // Fetch all unfinished mishnas (max 30)
+  // Fetch unfinished mishnas
   static async getUnfinishedMishnas() {
     const mishnaRepository = AppDataSource.getRepository(Mishna);
     return await mishnaRepository.find({
-      where: { done: false },
-      take: 30,
+      where: { done: false }
     });
   }
 
   // Reset mishnas (insert new data)
   static async resetMishnas() {
     await reset();
-  }
-
-  // Fetch unfinished mishnas for a specific masechet
-  static async getUnfinishedMishnasByMasechet(masechet: string) {
-    const mishnaRepository = AppDataSource.getRepository(Mishna);
-    return await mishnaRepository.find({
-      where: { masechet, done: false },
-    });
   }
 
   // Fetch all mishnas (done or not done)
@@ -41,19 +32,19 @@ export class MishnaService {
   }
 
   // Mark a mishna as done
-  static async markMishnaAsDone(masechet: string, startperek: string) {
+  static async markMishnaAsDone(mishnaId: number) {
     const mishnaRepository = AppDataSource.getRepository(Mishna);
     await mishnaRepository.update(
-      { masechet, startperek },
+      { id: mishnaId },
       { done: true }
     );
   }
 
   // Mark a mishna as undone (go back)
-  static async markMishnaAsUndone(masechet: string, startperek: string) {
+  static async markMishnaAsUndone(mishnaId: number) {
     const mishnaRepository = AppDataSource.getRepository(Mishna);
     await mishnaRepository.update(
-      { masechet, startperek },
+      { id: mishnaId },
       { done: false }
     );
   }

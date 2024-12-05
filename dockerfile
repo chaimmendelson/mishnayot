@@ -23,7 +23,6 @@ COPY backend/package*.json ./
 RUN npm install
 
 COPY ./backend .
-
 # Step 7: Build the backend (assuming TypeScript build is set in backend/package.json)
 RUN npm run build
 
@@ -31,7 +30,7 @@ RUN npm run build
 RUN mkdir -p /app/backend/public && cp -r /app/frontend/build/* /app/backend/public/
 
 # Step 9: Expose the port that the server will run on
-EXPOSE 3000
+EXPOSE 4000
 
 # Step 10: Start the backend application
 CMD ["npm", "run", "start", "--prefix", "/app/backend"]
