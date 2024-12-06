@@ -27,7 +27,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mishna_db
       PORT: 4000
-      REACT_APP_API_URL: '' # If this is intended for the frontend
+      REACT_APP_API_URL: '/' # If this is intended for the frontend
     ports:
       - '4000:4000'
     depends_on:

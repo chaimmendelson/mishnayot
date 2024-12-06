@@ -4,6 +4,8 @@ FROM node:18-alpine AS base
 # Step 2: Install dependencies and build the frontend
 FROM base AS frontend-builder
 WORKDIR /app/frontend
+ARG REACT_APP_API_URL='/'
+ENV REACT_APP_API_URL=${REACT_APP_API_URL}
 COPY frontend/package*.json ./
 RUN npm install
 COPY ./frontend ./
@@ -25,7 +27,7 @@ WORKDIR /app/backend
 COPY --from=backend-builder /app/backend ./
 
 # Move built frontend files to the backend's 'public' directory
-RUN mkdir -p ./public && cp -r /app/backend/public/* ./public/
+COPY --from=frontend-builder /app/frontend/build/ ./public/
 
 # Expose the server's port
 EXPOSE 4000

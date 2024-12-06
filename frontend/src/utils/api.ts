@@ -1,9 +1,9 @@
 // src/api.ts
 import axios from 'axios';
 
-const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
-
-const apiUrl = `${baseUrl}/api/mishnas`;
+const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000/';
+console.log('baseUrl:', baseUrl);
+const apiUrl = `${baseUrl}api/mishnas`;
 
 export class Api {
 
