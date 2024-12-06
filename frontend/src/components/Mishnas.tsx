@@ -1,6 +1,5 @@
 import { Container, Stack } from "react-bootstrap";
 import Mishna from "./Mishna";
-import { Api } from "../utils/api";
 
 interface IProps {
   results:

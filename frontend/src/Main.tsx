@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Mishnas from "./components/Mishnas";
 import Search from "./components/Search";
 import { Api } from "./utils/api";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col, Button, ToastContainer } from "react-bootstrap";
+import ToastNotification from "./components/Toast";
 
 interface IMapData {
   id: number;
@@ -19,14 +20,26 @@ function Main() {
   const [mapData, setMapData] = useState<IMapData[]>([]);
   const [filter, setFilter] = useState<string>("");
   const [filteredData, setFilteredData] = useState<IMapData[]>([]);
+  const [toastMessages, setToastMessages] = useState<
+    { message: string; variant: "success" | "error" | "info" }[]
+  >([]);
 
   const refreshData = async () => {
-    const response = await Api.fetchAllMishnas();
-    const responseJson: IObjectReturn = response;
-    console.log(responseJson);
-    const res: IMapData[] = responseJson.results;
-    console.log(res); //array full
-    setMapData(res);
+    try {
+      const response = await Api.fetchAllMishnas();
+      const responseJson: IObjectReturn = response;
+      const res: IMapData[] = responseJson.results;
+      setMapData(res);
+      setToastMessages([
+        ...toastMessages,
+        { message: "הרשימה עודכנה בהצלחה", variant: "success" },
+      ]);
+    } catch (error) {
+      setToastMessages([
+        ...toastMessages,
+        { message: "עידכון הרשימה נכשל", variant: "error" },
+      ]);
+    }
   };
 
   useEffect(() => {
@@ -42,26 +55,36 @@ function Main() {
   }, [filter]);
 
   const toggleDone = async (mishnaId: number) => {
-    const mishna = mapData.find((mishna) => mishna.id === mishnaId);
-    if (mishna?.done === true) {
-      await Api.markMishnaAsUndone(mishnaId);
-    } else {
-      await Api.markMishnaAsDone(mishnaId);
-    }
-    const updatedData = mapData.map((mishna) => {
-      if (mishna.id === mishnaId) {
-        mishna.done = !mishna.done;
+    try {
+      const mishna = mapData.find((mishna) => mishna.id === mishnaId);
+      if (mishna?.done) {
+        await Api.markMishnaAsUndone(mishnaId);
+      } else {
+        await Api.markMishnaAsDone(mishnaId);
       }
-      return mishna;
-    });
-    setMapData(updatedData);
+      const updatedData = mapData.map((mishna) => {
+        if (mishna.id === mishnaId) {
+          return { ...mishna, done: !mishna.done };
+        }
+        return mishna;
+      });
+      setMapData(updatedData);
+      setToastMessages([
+        ...toastMessages,
+        { message: "הרשימה עודכנה בהצלחה", variant: "success" },
+      ]);
+    } catch (error) {
+      setToastMessages([
+        ...toastMessages,
+        { message: "עידכון הרשימה נכשל", variant: "error" },
+      ]);
+    }
   };
 
   const filterData = () => {
-    // filter the the mapData by the term no request to the server
-    const filtered = mapData.filter((mishna) => {
-      return mishna.masechet.toLowerCase().includes(filter.toLowerCase());
-    });
+    const filtered = mapData.filter((mishna) =>
+      mishna.masechet.toLowerCase().includes(filter.toLowerCase())
+    );
     setFilteredData(filtered);
   };
 
@@ -70,10 +93,32 @@ function Main() {
   };
 
   return (
-    <Container className="App">
-      <Search onValueChange={updateFilter} />
+    <Container style={{ width: "70%" }}>
+      <Row className="align-items-center my-5">
+        <Col xs={11}>
+          <Search onValueChange={updateFilter} />
+        </Col>
+        <Col xs={1} className="text-end">
+          <Button variant="secondary" onClick={refreshData}>
+            רענן
+          </Button>
+        </Col>
+      </Row>
       <Mishnas results={filteredData} toggleDone={toggleDone} />
-      <p></p>
+      {/* Toast container */}
+      <ToastContainer
+        position="bottom-end"
+        className="p-3"
+        style={{ width: "15%" }}
+      >
+        {toastMessages.map((toast, index) => (
+          <ToastNotification
+            key={index}
+            message={toast.message}
+            variant={toast.variant}
+          />
+        ))}
+      </ToastContainer>
     </Container>
   );
 }

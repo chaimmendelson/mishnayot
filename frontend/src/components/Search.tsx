@@ -16,10 +16,10 @@ const Search: React.FC<SearchProps> = ({ onValueChange }) => {
   // Update the value in the parent component
   React.useEffect(() => {
     onValueChange(searchTerm);
-  }, [searchTerm]);
+  }, [searchTerm, onValueChange]);
   
   return (
-    <Container className="my-5">
+    <Container>
       <Row>
         <InputGroup>
           <FormControl

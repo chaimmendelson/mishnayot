@@ -29,7 +29,7 @@ function Mishna(props: MishnaProps) {
           </Card.Text>
         </div>
         {props.done ? (
-          <Button variant="success" onClick={toggleDone}>
+          <Button variant="light" onClick={toggleDone}>
             בטל סימון
           </Button>
         ) : (

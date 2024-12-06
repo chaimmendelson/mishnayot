@@ -10,7 +10,7 @@ interface IMapData {
 }
 
 const Stats: React.FC = () => {
-  const [mishnas, setMishnas] = useState<IMapData[]>([]);
+  const [, setMishnas] = useState<IMapData[]>([]);
   const [percentage, setPercentage] = useState<string>("0");
 
   const fetchMishnas = async () => {
