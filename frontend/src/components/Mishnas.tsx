@@ -6,7 +6,7 @@ interface IProps {
     | {
         id: number;
         masechet: string;
-        startperek: string;
+        prakim: string;
         done: boolean;
       }[]
     | undefined;
@@ -30,7 +30,7 @@ function Mishnas(props: IProps) {
       return (
         <Mishna
           masechet={item.masechet}
-          startperek={item.startperek}
+          prakim={item.prakim}
           done={item.done}
           id={item.id}
           key={item.id}

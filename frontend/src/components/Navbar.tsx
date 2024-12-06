@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import Col from "react-bootstrap/Col";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCopyright } from "@fortawesome/free-solid-svg-icons";
-import { Row, Stack } from "react-bootstrap";
 
 // Define types for props
 interface NavBarProps {

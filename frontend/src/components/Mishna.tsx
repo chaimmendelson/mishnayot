@@ -1,7 +1,7 @@
 import { Card, Button } from "react-bootstrap";
 interface MishnaProps {
   masechet: string;
-  startperek: string;
+  prakim: string;
   done: boolean;
   id: number;
   toggleDone: (MishnaId: number) => void;
@@ -24,8 +24,7 @@ function Mishna(props: MishnaProps) {
         <div>
           <Card.Title>{props.masechet}</Card.Title>
           <Card.Text>
-            {props.startperek.includes("-") ? "פרקים" : "פרק"}{" "}
-            {props.startperek}
+            {props.prakim.includes("-") ? "פרקים" : "פרק"} {props.prakim}
           </Card.Text>
         </div>
         {props.done ? (

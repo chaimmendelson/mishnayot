@@ -18,7 +18,7 @@ const reset = async () => {
     logger.info("All existing mishnayot removed.");
 
     // Reset the serial counter for the id column
-    await AppDataSource.query('SELECT setval(\'mishna_id_seq\', 1, false)');
+    await AppDataSource.query("SELECT setval('mishna_id_seq', 1, false)");
     logger.info("Serial counter for 'id' has been reset.");
 
     // Read the text file
@@ -29,9 +29,9 @@ const reset = async () => {
     const itemArr: string[] = data.split("\n");
 
     for (const line of itemArr) {
-      const [masechet, startperek] = line.split("/");
+      const [masechet, prakim] = line.split("/");
 
-      if (!masechet || !startperek) {
+      if (!masechet || !prakim) {
         logger.warn(`Skipping invalid line: ${line}`);
         continue;
       }
@@ -39,7 +39,7 @@ const reset = async () => {
       // Create a new Mishna instance
       const newMishna = mishnaRepository.create({
         masechet: masechet.trim(),
-        startperek: startperek.trim(),
+        prakim: prakim.trim(),
         done: false, // Boolean type
       });
 

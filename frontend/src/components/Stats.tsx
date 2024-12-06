@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { ProgressBar, Row, Col, Container } from "react-bootstrap";
-import {Api} from "../utils/api"; // Adjust the path to your API file
+import { Api } from "../utils/api"; // Adjust the path to your API file
 
 interface IMapData {
   id: number;
   masechet: string;
-  startperek: string;
+  prakim: string;
   done: boolean; // Assuming `done` is a boolean for clarity
 }
 
@@ -42,7 +42,7 @@ const Stats: React.FC = () => {
 
   return (
     <Container style={{ direction: "rtl", marginTop: "20px" }}>
-      <Row className="mb-4" style={{ marginTop: "10vh"}}>
+      <Row className="mb-4" style={{ marginTop: "10vh" }}>
         <Col className="text-center">
           <h1>אחוז המשניות שנלמדו: - {percentage}%</h1>
         </Col>

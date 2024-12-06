@@ -8,7 +8,7 @@ import ToastNotification from "./components/Toast";
 interface IMapData {
   id: number;
   masechet: string;
-  startperek: string;
+  prakim: string;
   done: boolean;
 }
 
@@ -86,7 +86,7 @@ function Main() {
       for (const word of filter.split(" ")) {
         if (
           !mishna.masechet.toLowerCase().includes(word.toLowerCase()) &&
-          !mishna.startperek.toLowerCase().includes(word.toLowerCase())
+          !mishna.prakim.toLowerCase().includes(word.toLowerCase())
         ) {
           return false;
         }
