@@ -1,13 +1,15 @@
 // src/api.ts
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:4000';
+const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
+const apiUrl = `${baseUrl}/api/mishnas`;
 
 export class Api {
 
     static async markMishnaAsDone(id: number) {
         try {
-            const response = await axios.patch(`${baseUrl}/api/mishnas/done/${id}`);
+            const response = await axios.patch(`${apiUrl}/done/${id}`);
             return response.data;
         } catch (error) {
             console.error('Error marking mishna as done:', error);
@@ -17,7 +19,7 @@ export class Api {
 
     static async markMishnaAsUndone(id: number) {
         try {
-            const response = await axios.patch(`${baseUrl}/api/mishnas/revert/${id}`);
+            const response = await axios.patch(`${apiUrl}/revert/${id}`);
             return response.data;
         } catch (error) {
             console.error('Error reverting mishna to undone:', error);
@@ -27,7 +29,7 @@ export class Api {
 
     static async resetMishnas() {
         try {
-            const response = await axios.get(`${baseUrl}/api/mishnas/reset`);
+            const response = await axios.get(`${apiUrl}/reset`);
             return response.data;
         } catch (error) {
             console.error('Error resetting mishnas:', error);
@@ -37,7 +39,7 @@ export class Api {
 
     static async fetchAllMishnas() {
         try {
-            const response = await axios.get(`${baseUrl}/api/mishnas/all`);
+            const response = await axios.get(`${apiUrl}/all`);
             return response.data;
         } catch (error) {
             console.error('Error fetching all mishnas:', error);
@@ -47,7 +49,7 @@ export class Api {
 
     static async fetchFinishedMishnas() {
         try {
-            const response = await axios.get(`${baseUrl}/api/mishnas/done`);
+            const response = await axios.get(`${apiUrl}/done`);
             return response.data;
         } catch (error) {
             console.error('Error fetching finished mishnas:', error);
@@ -57,7 +59,7 @@ export class Api {
 
     static async fetchUnfinishedMishnas() {
         try {
-            const response = await axios.get(`${baseUrl}/api/mishnas`);
+            const response = await axios.get(`${apiUrl}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching unfinished mishnas:', error);

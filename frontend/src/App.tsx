@@ -13,7 +13,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div>
+      <div className="bg-light" style={{height: "100vh"}}>
         {/* Pass appName and pages to NavBar */}
         <NavBar appName={appName} pages={pages} />
 

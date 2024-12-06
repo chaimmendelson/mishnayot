@@ -82,9 +82,17 @@ function Main() {
   };
 
   const filterData = () => {
-    const filtered = mapData.filter((mishna) =>
-      mishna.masechet.toLowerCase().includes(filter.toLowerCase())
-    );
+    const filtered = mapData.filter((mishna) => {
+      for (const word of filter.split(" ")) {
+        if (
+          !mishna.masechet.toLowerCase().includes(word.toLowerCase()) &&
+          !mishna.startperek.toLowerCase().includes(word.toLowerCase())
+        ) {
+          return false;
+        }
+      }
+      return true;
+    });
     setFilteredData(filtered);
   };
 
@@ -99,7 +107,7 @@ function Main() {
           <Search onValueChange={updateFilter} />
         </Col>
         <Col xs={1} className="text-end">
-          <Button variant="secondary" onClick={refreshData}>
+          <Button variant="info" onClick={refreshData}>
             רענן
           </Button>
         </Col>

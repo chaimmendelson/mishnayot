@@ -1,36 +1,34 @@
 # Step 1: Use an official Node.js image as a base
-FROM node:18-alpine
+FROM node:18-alpine AS base
 
-# Step 2: Set working directory for frontend
+# Step 2: Install dependencies and build the frontend
+FROM base AS frontend-builder
 WORKDIR /app/frontend
-
-# Step 3: Copy frontend package.json and install dependencies
 COPY frontend/package*.json ./
-
 RUN npm install
-
-COPY ./frontend .
-
-# Step 4: Build the frontend (assuming the frontend build outputs to 'frontend/build')
+COPY ./frontend ./
 RUN npm run build
 
-# Step 5: Set working directory for backend
+# Step 3: Install dependencies and build the backend
+FROM base AS backend-builder
+WORKDIR /app/backend
+COPY backend/package*.json ./
+RUN npm install
+COPY ./backend ./
+RUN npm run build
+
+# Step 4: Create the final image for running the application
+FROM node:18-alpine AS final
 WORKDIR /app/backend
 
-# Step 6: Copy backend package.json and install dependencies
-COPY backend/package*.json ./
+# Copy the built backend
+COPY --from=backend-builder /app/backend ./
 
-RUN npm install
+# Move built frontend files to the backend's 'public' directory
+RUN mkdir -p ./public && cp -r /app/backend/public/* ./public/
 
-COPY ./backend .
-# Step 7: Build the backend (assuming TypeScript build is set in backend/package.json)
-RUN npm run build
-
-# Step 8: Move the built frontend files to the 'public' directory of the backend
-RUN mkdir -p /app/backend/public && cp -r /app/frontend/build/* /app/backend/public/
-
-# Step 9: Expose the port that the server will run on
+# Expose the server's port
 EXPOSE 4000
 
-# Step 10: Start the backend application
-CMD ["npm", "run", "start", "--prefix", "/app/backend"]
+# Start the backend application
+CMD ["npm", "start"]
